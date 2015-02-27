@@ -70,6 +70,10 @@ func (t *Btree) run() {
 				rst, err := t.search(op.Key)
 				op.valueChan <- rst
 				op.errChan <- err
+            case "left":
+                rst, err := t.left()
+                op.valueChan <- rst
+                op.errChan <- err
 			}
 			t.Index = proto.Int64(t.GetIndexCursor())
 		case <-tick:
@@ -131,4 +135,15 @@ func (t *Btree) Update(key, value []byte) error {
 	q.Value = value
 	t.opChan <- q
 	return <-q.errChan
+}
+
+// get the left-most value, just for shits and giggles
+func (t *Btree) Left() ([]byte, error) {
+    q := &treeOperation {
+        valueChan: make(chan []byte),
+        errChan: make(chan error),
+    }
+    q.Action = proto.String("left")
+    t.opChan <- q
+    return <-q.valueChan, <-q.errChan
 }
