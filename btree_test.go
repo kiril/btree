@@ -16,6 +16,15 @@ func TestInsert(t *testing.T) {
 	}
 }
 
+func TestLeft(test *testing.T) {
+    tree := btree.NewBtreeSize(2, 2)
+    expectedValue := "value_aa"
+    tree.Insert([]byte("key_aa"), []byte(expectedValue))
+    if value, error := tree.Left(); error != nil || string(value) != expectedValue {
+        test.Fatalf("I put in %s but got %s", expectedValue, string(value))
+    }
+}
+
 func TestSearch(t *testing.T) {
 	tree := btree.NewBtreeSize(2, 3)
 	size := 100
@@ -29,6 +38,7 @@ func TestSearch(t *testing.T) {
 		}
 	}
 }
+
 func TestUpdate(t *testing.T) {
 	tree := btree.NewBtreeSize(3, 2)
 	size := 100
@@ -47,6 +57,7 @@ func TestUpdate(t *testing.T) {
 		}
 	}
 }
+
 func TestDelete(t *testing.T) {
 	tree := btree.NewBtreeSize(3, 3)
 	size := 8
