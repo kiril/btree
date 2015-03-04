@@ -27,6 +27,11 @@ func TestLeft(test *testing.T) {
 
 func TestCount(test *testing.T) {
     tree := btree.NewBtreeSize(2, 2)
+
+    if count, error := tree.Count(); error != nil || count != 0 {
+        test.Fatal("Initial count failure", error)
+    }
+
     expectedValue := "value_aa"
     tree.Insert([]byte("key_aa"), []byte(expectedValue))
     if value, error := tree.Left(); error != nil || string(value) != expectedValue {

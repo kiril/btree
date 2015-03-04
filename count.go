@@ -4,6 +4,9 @@ func (tree *Btree) count() (int, error) {
     var value int
     tnode, err := tree.getTreeNode(tree.GetRoot())
     if err != nil {
+        if err.Error() == "no data" {
+            return 0, nil
+        }
         return value, err
     }
     return tnode.count(tree)
