@@ -25,6 +25,25 @@ func TestLeft(test *testing.T) {
     }
 }
 
+func TestCount(test *testing.T) {
+    tree := btree.NewBtreeSize(2, 2)
+    expectedValue := "value_aa"
+    tree.Insert([]byte("key_aa"), []byte(expectedValue))
+    if value, error := tree.Left(); error != nil || string(value) != expectedValue {
+        test.Fatalf("I put in %s but got %s", expectedValue, string(value))
+    }
+
+    if count, error := tree.Count(); error != nil || count != 1 {
+        test.Fatalf("Count isn't 1 : %d", count)
+    }
+
+    tree.Insert([]byte("key_bb"), []byte("value_bb"))
+
+    if count, error := tree.Count(); error != nil || count != 2 {
+        test.Fatalf("Count isn't 2 : %d", count)
+    }
+}
+
 func TestSearch(t *testing.T) {
 	tree := btree.NewBtreeSize(2, 3)
 	size := 100

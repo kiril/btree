@@ -74,6 +74,10 @@ func (t *Btree) run() {
                 rst, err := t.left()
                 op.valueChan <- rst
                 op.errChan <- err
+            case "count":
+                count, err := t.count()
+                op.valueChan <- []byte{byte(count)}
+                op.errChan <- err
 			}
 			t.Index = proto.Int64(t.GetIndexCursor())
 		case <-tick:
@@ -146,4 +150,14 @@ func (t *Btree) Left() ([]byte, error) {
     q.Action = proto.String("left")
     t.opChan <- q
     return <-q.valueChan, <-q.errChan
+}
+
+func (t *Btree) Count() (int, error) {
+    q := &treeOperation {
+        valueChan: make(chan []byte),
+        errChan: make(chan error),
+    }
+    q.Action = proto.String("count")
+    t.opChan <- q
+    return int((<-q.valueChan)[0]), <-q.errChan
 }

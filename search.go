@@ -25,6 +25,7 @@ func (n *TreeNode) searchRecord(key []byte, tree *Btree) ([]byte, error) {
 			return value, err
 		}
 		return tnode.searchRecord(key, tree)
+
 	} else {
 		index--
 		if index >= 0 {
@@ -33,5 +34,6 @@ func (n *TreeNode) searchRecord(key []byte, tree *Btree) ([]byte, error) {
 			}
 		}
 	}
-	return value, fmt.Errorf("%s not find", string(key))
+
+	return value, fmt.Errorf("%s not found", string(key))
 }
